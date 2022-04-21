@@ -1,9 +1,11 @@
-import { ethers } from 'ethers';
-import { FormEvent, useState } from 'react';
-import { useWeb3 } from '../context';
+import { ethers, type CallOverrides } from 'ethers';
+import { type FormEvent, useState } from 'react';
 
-export const JoinForm = () => {
-  const { contract } = useWeb3();
+type JoinFormProps = {
+  joinLottery: (params?: CallOverrides) => Promise<void>;
+};
+
+export const JoinForm = ({ joinLottery }: JoinFormProps) => {
   const [state, setState] = useState({
     value: '',
     error: '',
@@ -31,7 +33,7 @@ export const JoinForm = () => {
     }
 
     try {
-      await contract.join({ value: entered });
+      await joinLottery({ value: entered });
       setState({
         message: 'You have been entered!',
         error: '',

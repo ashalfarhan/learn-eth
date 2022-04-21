@@ -1,8 +1,11 @@
 import { useState } from 'react';
-import { useWeb3 } from '../context';
+import type { Web3ContextValue } from '../context';
 
-export const DrawWinner = () => {
-  const { contract, playersCount } = useWeb3();
+type DrawWinnerProps = {
+  pickWinner: () => Promise<void>;
+} & Pick<Web3ContextValue, 'playersCount'>;
+
+export const DrawWinner = ({ pickWinner, playersCount }: DrawWinnerProps) => {
   const [state, setState] = useState({
     error: '',
     message: '',
@@ -10,7 +13,7 @@ export const DrawWinner = () => {
 
   const handlePickWinner = async () => {
     try {
-      await contract.pickWinner();
+      await pickWinner();
       setState(prev => ({
         ...prev,
         message: 'A winner has been picked!',

@@ -1,7 +1,7 @@
 import { BigNumber, ethers } from 'ethers';
 import { createContext } from 'react';
 
-type Web3ContextValue = {
+export type Web3ContextValue = {
   account: string;
   manager: string;
   playersCount: number;

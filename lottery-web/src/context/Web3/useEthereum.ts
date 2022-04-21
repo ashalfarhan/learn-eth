@@ -1,6 +1,6 @@
 import { ethers } from 'ethers';
 import { useState, useRef, useEffect } from 'react';
-import { JsonRpcSigner, Web3Provider } from '@ethersproject/providers';
+import type { JsonRpcSigner, Web3Provider } from '@ethersproject/providers';
 
 export const useEthereum = () => {
   const { ethereum } = window;
