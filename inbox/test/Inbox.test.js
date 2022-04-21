@@ -3,10 +3,8 @@ const ganache = require('ganache-cli');
 const { ethers } = require('ethers');
 const { interface, bytecode } = require('../scripts/compile');
 
-const toEth = ethers.utils.formatEther;
+// const toEth = ethers.utils.formatEther;
 
-/** @type {string[]} */
-let accounts;
 /** @type {ethers.Contract} */
 let inbox;
 /** @type {ethers.providers.JsonRpcSigner} */
@@ -14,7 +12,6 @@ let deployer;
 
 before(async () => {
   const provider = new ethers.providers.Web3Provider(ganache.provider());
-  accounts = await provider.listAccounts();
 
   const factory = new ethers.ContractFactory(interface, bytecode);
   deployer = provider.getSigner();
