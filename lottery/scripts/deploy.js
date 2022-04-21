@@ -1,6 +1,6 @@
 require('dotenv/config');
 const { ethers } = require('ethers');
-const { interface, bytecode } = require('./compile');
+const { abi, bytecode } = require('../artifacts/Lottery.json');
 
 const infura = new ethers.providers.InfuraProvider('rinkeby');
 const conn = ethers.providers.InfuraProvider.getUrl(infura.network, {
@@ -12,16 +12,18 @@ const provider = new ethers.providers.JsonRpcProvider(conn, infura.network);
 
 async function main() {
   const deployer = new ethers.Wallet(process.env.MANAGER_PRIVATE_KEY, provider);
-  const factory = new ethers.ContractFactory(interface, bytecode, deployer);
-
+  const factory = new ethers.ContractFactory(abi, bytecode, deployer);
   const contract = await factory.deploy();
-  console.log('Contract address:', contract.address);
-  console.log('Contract abi:', JSON.stringify(interface));
-  console.log('Deploy transaction:', contract.deployTransaction);
+  return contract.address;
 }
 
-main().catch(err => {
-  console.log('Failed with error:');
-  console.error(err);
-  process.exit(1);
-});
+main()
+  .then(addr => {
+    console.log('Deployment success: ', infura);
+    console.log('Contract address:', addr);
+  })
+  .catch(err => {
+    console.log('Failed to deploy');
+    console.error(err);
+    process.exit(1);
+  });
