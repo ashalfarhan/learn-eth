@@ -5,10 +5,6 @@ const solc = require('solc');
 const contractPath = path.resolve(__dirname, '..', 'contracts', 'Inbox.sol');
 const source = fs.readFileSync(contractPath, 'utf-8');
 
-// Using solc 0.4.x
-// module.exports = solc.compile(source, 1).contracts[':Inbox'];
-
-// Using solc 0.8.x
 const options = {
   language: 'Solidity',
   sources: {
