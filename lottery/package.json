@@ -12,6 +12,8 @@
     "solc": "^0.8.13"
   },
   "scripts": {
-    "test": "mocha"
+    "test": "mocha ./test/**/*.test.js",
+    "build": "node scripts/compile.js",
+    "deploy": "node scripts/deploy.js"
   }
 }

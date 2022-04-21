@@ -1,7 +1,7 @@
 const assert = require('assert');
 const ganache = require('ganache-cli');
 const { ethers } = require('ethers');
-const { interface, bytecode } = require('../scripts/compile');
+const { abi, bytecode } = require('../artifacts/Lottery.json');
 
 const provider = new ethers.providers.Web3Provider(ganache.provider());
 
@@ -18,7 +18,7 @@ let deployer;
 beforeEach(async () => {
   [manager, player1, player2] = await provider.listAccounts();
 
-  const factory = new ethers.ContractFactory(interface, bytecode);
+  const factory = new ethers.ContractFactory(abi, bytecode);
   deployer = provider.getSigner(manager);
 
   lottery = await factory.connect(deployer).deploy();
