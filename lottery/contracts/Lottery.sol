@@ -2,7 +2,7 @@
 pragma solidity ^0.8.13;
 
 contract Lottery {
-    address private manager;
+    address public manager;
     address payable[] private players;
 
     constructor() {
@@ -42,5 +42,9 @@ contract Lottery {
 
     function getPlayers() public view returns(address payable[] memory) {
         return players;
+    }
+
+    function getTotalPlayers() public view returns(uint) {
+        return players.length;
     }
 }

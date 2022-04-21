@@ -3,10 +3,7 @@ const ganache = require('ganache-cli');
 const { ethers } = require('ethers');
 const { interface, bytecode } = require('../scripts/compile');
 
-// const toEth = ethers.utils.formatEther;
-
-/** @type {ethers.providers.Web3Provider} */
-let provider;
+const provider = new ethers.providers.Web3Provider(ganache.provider());
 
 let manager;
 let player1;
@@ -18,8 +15,7 @@ let lottery;
 /** @type {ethers.providers.JsonRpcSigner} */
 let deployer;
 
-before(async () => {
-  provider = new ethers.providers.Web3Provider(ganache.provider());
+beforeEach(async () => {
   [manager, player1, player2] = await provider.listAccounts();
 
   const factory = new ethers.ContractFactory(interface, bytecode);
@@ -29,21 +25,35 @@ before(async () => {
 });
 
 describe('Lottery Contract', () => {
-  it('should success deploy the contract', () => {
+  it('should success deploy the contract', async () => {
     assert.ok(lottery.address);
+    assert.equal(await lottery.manager(), manager);
+
+    const initialPlayers = await lottery.getTotalPlayers();
+    assert.equal(initialPlayers, 0);
   });
 
-  it('should have no player initially', async () => {
-    const players = await lottery.getPlayers();
-    assert.ok(players.length === 0);
-  });
-
-  it('should failed to join if no eth supplied', async () => {
-    await lottery.join().catch(err => {
+  it('should failed to join if no value supplied', async () => {
+    try {
+      await lottery.join();
+      assert(false);
+    } catch (err) {
       const { error, reason } = err.results[err.hashes[0]];
       assert.equal(error, 'revert');
       assert.equal(reason, 'Join must be cost at least 0.01 ETH');
-    });
+    }
+  });
+
+  it('should failed to join if supplied value is less than 0.01', async () => {
+    const value = ethers.utils.parseUnits('1000', 'wei');
+    try {
+      await lottery.join({ value });
+      assert(false);
+    } catch (err) {
+      const { error, reason } = err.results[err.hashes[0]];
+      assert.equal(error, 'revert');
+      assert.equal(reason, 'Join must be cost at least 0.01 ETH');
+    }
   });
 
   it('should success to join if supply correct amount of eth', async () => {
@@ -63,15 +73,39 @@ describe('Lottery Contract', () => {
     const p1Sign = provider.getSigner(player1);
     await lottery.connect(p1Sign).join({ value });
 
-    const [, p1] = await lottery.getPlayers();
+    const [p1] = await lottery.getPlayers();
     assert.equal(p1, player1);
   });
 
   it('should fail to pickWinner if not manager', async () => {
-    await lottery.pickWinner().catch(err => {
+    const p1Sign = provider.getSigner(player1);
+    try {
+      await lottery.connect(p1Sign).pickWinner();
+      assert(false);
+    } catch (err) {
       const { error, reason } = err.results[err.hashes[0]];
       assert.equal(error, 'revert');
       assert.equal(reason, 'Only manager can call this function');
+    }
+  });
+
+  it('should success pickWinner and send the total ETH to the winner', async () => {
+    const value = ethers.utils.parseEther('2');
+    const p2Sign = provider.getSigner(player2);
+
+    /** @type {ethers.ContractTransaction} */
+    const tx = await lottery.connect(p2Sign).join({
+      value,
     });
+    await tx.wait();
+    const afterJoinBalance = await p2Sign.getBalance();
+
+    /** @type {ethers.ContractTransaction} */
+    const tx2 = await lottery.pickWinner();
+    await tx2.wait();
+
+    const finalBalance = await p2Sign.getBalance();
+    const difference = finalBalance.sub(afterJoinBalance);
+    assert(difference > ethers.utils.parseEther('1.8'));
   });
 });
