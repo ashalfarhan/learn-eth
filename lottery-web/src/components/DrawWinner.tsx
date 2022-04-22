@@ -20,7 +20,7 @@ export const DrawWinner = ({ pickWinner, playersCount }: DrawWinnerProps) => {
         error: '',
       }));
     } catch (error) {
-      console.error('Failed to join', error);
+      console.error('Failed to draw winner', error);
       setState(prev => ({
         ...prev,
         error: error?.error?.message ?? "Something wen't wrong, check console",
