@@ -2,8 +2,9 @@ import { ethers } from 'ethers';
 import { useState, useRef, useEffect } from 'react';
 import type { JsonRpcSigner, Web3Provider } from '@ethersproject/providers';
 
+const { ethereum } = window;
+
 export const useEthereum = () => {
-  const { ethereum } = window;
   const [account, setAccount] = useState('');
   const provider = useRef<Web3Provider>();
   const signer = useRef<JsonRpcSigner>();
@@ -27,20 +28,10 @@ export const useEthereum = () => {
   }, []);
 
   useEffect(() => {
-    if (provider.current) return;
     if (!ethereum) return;
 
     provider.current = new ethers.providers.Web3Provider(ethereum);
     signer.current = provider.current.getSigner();
-  }, []);
-
-  useEffect(() => {
-    if (!provider.current) return;
-    signer.current = provider.current.getSigner();
-  }, [account]);
-
-  useEffect(() => {
-    if (!ethereum) return;
 
     const handleAccountChange = (accs: string[]) => {
       setAccount(accs[0]);
@@ -53,12 +44,16 @@ export const useEthereum = () => {
 
     ethereum.on('accountsChanged', handleAccountChange);
     ethereum.on('chainChanged', handleChainChange);
-
     return () => {
       ethereum.removeListener('accountsChanged', handleAccountChange);
       ethereum.removeListener('chainChanged', handleChainChange);
     };
   }, []);
+
+  useEffect(() => {
+    if (!provider.current) return;
+    signer.current = provider.current.getSigner();
+  }, [account]);
 
   return { account, signer: signer.current, provider: provider.current };
 };
