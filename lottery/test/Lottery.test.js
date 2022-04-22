@@ -106,6 +106,6 @@ describe('Lottery Contract', () => {
 
     const finalBalance = await p2Sign.getBalance();
     const difference = finalBalance.sub(afterJoinBalance);
-    assert(difference > ethers.utils.parseEther('1.8'));
+    assert(difference.gte(ethers.utils.parseEther('1.8')));
   });
 });
