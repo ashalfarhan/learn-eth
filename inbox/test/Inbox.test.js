@@ -1,19 +1,19 @@
 const assert = require('assert');
-const ganache = require('ganache-cli');
+const ganache = require('ganache');
 const { ethers } = require('ethers');
-const { interface, bytecode } = require('../scripts/compile');
+const { abi, bytecode } = require('../artifacts/Inbox.json');
 
-// const toEth = ethers.utils.formatEther;
+const provider = new ethers.providers.Web3Provider(
+  ganache.provider({ quiet: true })
+);
 
 /** @type {ethers.Contract} */
 let inbox;
 /** @type {ethers.providers.JsonRpcSigner} */
 let deployer;
 
-before(async () => {
-  const provider = new ethers.providers.Web3Provider(ganache.provider());
-
-  const factory = new ethers.ContractFactory(interface, bytecode);
+beforeEach(async () => {
+  const factory = new ethers.ContractFactory(abi, bytecode);
   deployer = provider.getSigner();
 
   inbox = await factory
