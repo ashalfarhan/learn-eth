@@ -14,12 +14,6 @@ export const JoinForm = ({ joinLottery }: JoinFormProps) => {
 
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
-    setState(prev => ({
-      ...prev,
-      message: 'Waiting on transaction success...',
-      error: '',
-    }));
-
     const minVal = ethers.utils.parseEther('0.01');
     const entered = ethers.utils.parseEther(state.value);
 
@@ -33,6 +27,11 @@ export const JoinForm = ({ joinLottery }: JoinFormProps) => {
     }
 
     try {
+      setState(prev => ({
+        ...prev,
+        message: 'Waiting on transaction success...',
+        error: '',
+      }));
       await joinLottery({ value: entered });
       setState({
         message: 'You have been entered!',
@@ -64,7 +63,7 @@ export const JoinForm = ({ joinLottery }: JoinFormProps) => {
       {state.error && (
         <span style={{ color: 'red' }}>{'❌ ' + state.error}</span>
       )}
-      {state.message && <span>{'☑️ ' + state.message}</span>}
+      {state.message && <span>{'☑️  ' + state.message}</span>}
     </form>
   );
 };
