@@ -1,9 +1,13 @@
 const assert = require('assert');
-const ganache = require('ganache-cli');
+const ganache = require('ganache');
 const { ethers } = require('ethers');
 const { abi, bytecode } = require('../artifacts/Lottery.json');
 
-const provider = new ethers.providers.Web3Provider(ganache.provider());
+const provider = new ethers.providers.Web3Provider(
+  ganache.provider({
+    quiet: true,
+  })
+);
 
 let manager;
 let player1;
@@ -19,7 +23,7 @@ beforeEach(async () => {
   [manager, player1, player2] = await provider.listAccounts();
 
   const factory = new ethers.ContractFactory(abi, bytecode);
-  deployer = provider.getSigner(manager);
+  deployer = provider.getSigner();
 
   lottery = await factory.connect(deployer).deploy();
 });
@@ -38,8 +42,8 @@ describe('Lottery Contract', () => {
       await lottery.join();
       assert(false);
     } catch (err) {
-      const { error, reason } = err.results[err.hashes[0]];
-      assert.equal(error, 'revert');
+      const { message, reason } = err.data;
+      assert.equal(message, 'revert');
       assert.equal(reason, 'Join must be cost at least 0.01 ETH');
     }
   });
@@ -50,8 +54,8 @@ describe('Lottery Contract', () => {
       await lottery.join({ value });
       assert(false);
     } catch (err) {
-      const { error, reason } = err.results[err.hashes[0]];
-      assert.equal(error, 'revert');
+      const { message, reason } = err.data;
+      assert.equal(message, 'revert');
       assert.equal(reason, 'Join must be cost at least 0.01 ETH');
     }
   });
@@ -83,8 +87,8 @@ describe('Lottery Contract', () => {
       await lottery.connect(p1Sign).pickWinner();
       assert(false);
     } catch (err) {
-      const { error, reason } = err.results[err.hashes[0]];
-      assert.equal(error, 'revert');
+      const { message, reason } = err.data;
+      assert.equal(message, 'revert');
       assert.equal(reason, 'Only manager can call this function');
     }
   });
