@@ -9,3 +9,5 @@
 - Ether converter
   - https://etherconverter.online
   - https://eth-converter.com
+- Rinkeby faucet
+  - https://faucets.chain.link/rinkeby
