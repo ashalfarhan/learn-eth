@@ -113,3 +113,5 @@ describe('Lottery Contract', () => {
     assert(difference.gte(ethers.utils.parseEther('1.8')));
   });
 });
+
+// trigger
