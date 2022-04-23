@@ -7,4 +7,3 @@ const ganacheProvide = provider({
 }) as unknown as ExternalProvider;
 
 export const testProvider = new ethers.providers.Web3Provider(ganacheProvide);
-// trigger kickstart
