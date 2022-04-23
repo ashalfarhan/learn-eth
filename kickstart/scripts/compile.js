@@ -6,6 +6,9 @@ const contractPath = path.join(__dirname, '..', 'contracts');
 const artifactPath = path.join(__dirname, '..', 'artifacts');
 
 function main() {
+  if (!fs.existsSync(path.join(artifactPath, 'bytecode'))) {
+    fs.mkdirSync(path.join(artifactPath, 'bytecode'));
+  }
   const file = 'Campaign.sol';
   const source = fs.readFileSync(path.join(contractPath, file), 'utf8');
 
