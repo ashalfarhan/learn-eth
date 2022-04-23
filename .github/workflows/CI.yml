@@ -4,35 +4,47 @@ on:
   push:
     paths-ignore:
       - '**.md'
+      - '**.yml'
+      - '**.yaml'
 
 jobs:
   run_build:
-    name: Run build and stuff
+    name: Run build and test
     runs-on: ubuntu-latest
+
     steps:
       - uses: actions/checkout@v2
-      - name: Verify Changed files
+      - name: Check which modules changed
         id: changed_files
         uses: tj-actions/changed-files@v18.7
-      - name: Run inbox
-        if: contains(steps.changed_files.outputs.all_modified_files, 'inbox')
-        run: echo "yarn inbox build && yarn inbox test"
-      - name: Run kickstart
-        if: contains(steps.changed_files.outputs.all_modified_files, 'kickstart')
-        run: echo "yarn kickstart build && yarn kickstart test"
-      - name: Run lottery
-        if: contains(steps.changed_files.outputs.all_modified_files, 'lottery')
-        run: echo "yarn lottery build && yarn lottery test"
 
-  build_contract:
-    name: Build Solidity Contract
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v2
       - uses: actions/setup-node@v2
         with:
           node-version: 16.13
           cache: 'yarn'
       - run: yarn install --frozen-lockfile
-      - run: yarn inbox build
-      - run: yarn inbox test
+
+      - name: Module inbox
+        if: contains(steps.changed_files.outputs.all_modified_files, 'inbox/')
+        run: |
+          yarn inbox build
+          yarn inbox test
+
+      - name: Module lottery
+        if: contains(steps.changed_files.outputs.all_modified_files, 'lottery/')
+        run: |
+          yarn lottery build
+          yarn lottery test
+
+      - name: Module lottery-web
+        if: contains(steps.changed_files.outputs.all_modified_files, 'lottery-web/')
+        run: |
+          yarn lottery-web build
+          yarn lottery-web test
+
+      - name: Module kickstart
+        if: contains(steps.changed_files.outputs.all_modified_files, 'kickstart/')
+        run: |
+          yarn kickstart build:contract
+          yarn kickstart test
+          yarn kickstart build
