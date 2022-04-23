@@ -6,12 +6,23 @@ on:
       - '**.md'
 
 jobs:
-  changed_file:
-    name: Detecting file changed
+  run_build:
+    name: Run build and stuff
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
-      - run: echo $(git diff --name-only)
+      - name: Verify Changed files
+        id: changed_files
+        uses: tj-actions/changed-files@v18.7
+      - name: Run inbox
+        if: contains(steps.changed_files.outputs.all_modified_files, 'inbox')
+        run: echo "yarn inbox build && yarn inbox test"
+      - name: Run kickstart
+        if: contains(steps.changed_files.outputs.all_modified_files, 'kickstart')
+        run: echo "yarn kickstart build && yarn kickstart test"
+      - name: Run lottery
+        if: contains(steps.changed_files.outputs.all_modified_files, 'lottery')
+        run: echo "yarn lottery build && yarn lottery test"
 
   build_contract:
     name: Build Solidity Contract
