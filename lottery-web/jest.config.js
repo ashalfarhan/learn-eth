@@ -6,3 +6,4 @@ module.exports = {
     '^.+\\.tsx?$': 'esbuild-jest',
   },
 };
+// trigger
