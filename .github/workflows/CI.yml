@@ -1,0 +1,50 @@
+name: Main
+
+on:
+  push:
+    paths-ignore:
+      - '**.md'
+      - '**.yml'
+      - '**.yaml'
+
+jobs:
+  run_build:
+    name: Run build and test
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v2
+      - name: Check which modules changed
+        id: changed_files
+        uses: tj-actions/changed-files@v18.7
+
+      - uses: actions/setup-node@v2
+        with:
+          node-version: 16.13
+          cache: 'yarn'
+      - run: yarn install --frozen-lockfile
+
+      - name: Module inbox
+        if: contains(steps.changed_files.outputs.all_modified_files, 'inbox/')
+        run: |
+          yarn inbox build
+          yarn inbox test
+
+      - name: Module lottery
+        if: contains(steps.changed_files.outputs.all_modified_files, 'lottery/')
+        run: |
+          yarn lottery build
+          yarn lottery test
+
+      - name: Module lottery-web
+        if: contains(steps.changed_files.outputs.all_modified_files, 'lottery-web/')
+        run: |
+          yarn lottery-web build
+          yarn lottery-web test --ci --verbose
+
+      - name: Module kickstart
+        if: contains(steps.changed_files.outputs.all_modified_files, 'kickstart/')
+        run: |
+          yarn kickstart build:contract
+          yarn kickstart test --ci --verbose
+          yarn kickstart build
