@@ -22,5 +22,6 @@ jobs:
         with:
           node-version: 16.13
           cache: 'yarn'
+      - run: yarn install --frozen-lockfile
       - run: yarn inbox build
       - run: yarn inbox test
