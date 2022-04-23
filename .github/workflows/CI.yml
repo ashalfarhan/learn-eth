@@ -40,11 +40,11 @@ jobs:
         if: contains(steps.changed_files.outputs.all_modified_files, 'lottery-web/')
         run: |
           yarn lottery-web build
-          yarn lottery-web test
+          yarn lottery-web test --ci --verbose
 
       - name: Module kickstart
         if: contains(steps.changed_files.outputs.all_modified_files, 'kickstart/')
         run: |
           yarn kickstart build:contract
-          yarn kickstart test
+          yarn kickstart test --ci --verbose
           yarn kickstart build
