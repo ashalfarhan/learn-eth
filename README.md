@@ -58,9 +58,9 @@ Each contract (except for `inbox`) have their dedicated `deploy` script located 
   ```shell
   # Example for lottery contract
   touch .env
-  echo "INFURA_PROJECT_ID = '<paste_project_id_here>'"
-  echo "INFURA_PROJECT_SECRET = '<paste_project_secret_here>'"
-  echo "MANAGER_PRIVATE_KEY = '<paste_exported_wallet_private_key_here>'"
+  echo "INFURA_PROJECT_ID = '<paste_project_id_here>'" >> .env
+  echo "INFURA_PROJECT_SECRET = '<paste_project_secret_here>'" >> .env
+  echo "MANAGER_PRIVATE_KEY = '<paste_exported_wallet_private_key_here>'" >> .env
   ```
 
 - Then you can run the deploy script
