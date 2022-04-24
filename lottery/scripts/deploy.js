@@ -9,18 +9,22 @@ const conn = ethers.providers.InfuraProvider.getUrl(infura.network, {
 });
 
 const provider = new ethers.providers.JsonRpcProvider(conn, infura.network);
+const deployer = new ethers.Wallet(process.env.MANAGER_PRIVATE_KEY, provider);
 
 async function main() {
-  const deployer = new ethers.Wallet(process.env.MANAGER_PRIVATE_KEY, provider);
+  console.log('Attempting to deploy with account:', deployer.address);
   const factory = new ethers.ContractFactory(abi, bytecode, deployer);
   const contract = await factory.deploy();
-  return contract.address;
+  return contract;
 }
 
 main()
-  .then(addr => {
-    console.log('Deployment success: ', infura);
-    console.log('Contract address:', addr);
+  .then(contract => {
+    console.log('Contract address:', contract.address);
+    console.log(
+      'Deployment success with transaction hash:',
+      contract.deployTransaction.hash
+    );
   })
   .catch(err => {
     console.log('Failed to deploy');
