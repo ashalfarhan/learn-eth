@@ -4,10 +4,6 @@
 
 > This is my repository to learn Ethereum, and Solidity Smart Contract
 
-## Preview
-
-- `lottery` https://haans-lottery.surge.sh
-
 ## Workspaces
 
 This project is managed by [yarn workspace](https://classic.yarnpkg.com/lang/en/docs/workspaces/) to optimize dependency between different package
