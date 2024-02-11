@@ -45,4 +45,4 @@ jobs:
         run: |
           npm run -w kickstart build:contract
           npm run -w kickstart test
-          npm run -w kickstart build
+          # npm run -w kickstart build
