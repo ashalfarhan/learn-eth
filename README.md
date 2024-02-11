@@ -6,7 +6,7 @@
 
 ## Workspaces
 
-This project is managed by [yarn workspace](https://classic.yarnpkg.com/lang/en/docs/workspaces/) to optimize dependency between different package
+This project is managed by **npm workspace** to optimize dependency between different packages
 
 List of workspaces:
 
@@ -23,18 +23,18 @@ List of workspaces:
   ```
 - Install all required dependency
   ```shell
-  yarn
+  npm install
   ```
 - Make sure that the current version of this repo doesn't break
 
   ```shell
   # Build all the contracts to generate artifacts before test
-  yarn inbox build
-  yarn lottery build
-  yarn kickstart build:contract
+  npm run -w inbox build
+  npm run -w lottery build
+  npm run -w kickstart build:contract
 
   # Run test for all packages
-  yarn workspaces run test
+  npm run -ws test
   ```
 
 - Note that `lottery` and `lottery-web` doesn't sync the artifacts, meaning when you change some of the Solidity Contract in `lottery` and compile to generate artifacts (ABI and bytecode), the `lottery-web` wouldn't reference the latest ABI, so you need to copy the generated ABI to `lottery-web/src/abi.json`.
