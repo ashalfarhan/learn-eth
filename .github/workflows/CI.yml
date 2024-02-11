@@ -12,15 +12,15 @@ jobs:
 
     steps:
       - uses: actions/checkout@v2
-      - name: Check which modules changed
-        id: changed_files
-        uses: tj-actions/changed-files@v18.7
+      # - name: Check which modules changed
+      #   id: changed_files
+      #   uses: tj-actions/changed-files@v18.7
 
       - uses: actions/setup-node@v2
         with:
-          node-version: 16.13
+          node-version: 18.17
           cache: 'npm'
-      - run: npm install --frozen-lockfile
+      - run: npm ci
 
       - name: Module inbox
         # if: contains(steps.changed_files.outputs.all_modified_files, 'inbox/')
