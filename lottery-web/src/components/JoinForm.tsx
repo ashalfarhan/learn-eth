@@ -1,8 +1,8 @@
-import { ethers, type CallOverrides } from 'ethers';
+import { type Overrides, parseEther } from 'ethers';
 import { type FormEvent, useState } from 'react';
 
 type JoinFormProps = {
-  joinLottery: (params?: CallOverrides) => Promise<void>;
+  joinLottery: (params?: Overrides) => Promise<void>;
 };
 
 export const JoinForm = ({ joinLottery }: JoinFormProps) => {
@@ -14,10 +14,10 @@ export const JoinForm = ({ joinLottery }: JoinFormProps) => {
 
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
-    const minVal = ethers.utils.parseEther('0.01');
-    const entered = ethers.utils.parseEther(state.value);
+    const minVal = parseEther('0.01');
+    const entered = parseEther(state.value);
 
-    if (!entered.gte(minVal)) {
+    if (!(entered >= minVal)) {
       setState(prev => ({
         ...prev,
         error: 'Please enter at least 0.01 ETH',

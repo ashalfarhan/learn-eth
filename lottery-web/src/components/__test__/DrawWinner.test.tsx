@@ -1,8 +1,11 @@
-import { render, screen, waitFor } from '@testing-library/react';
-import { DrawWinner } from '../DrawWinner';
 import userEvent from '@testing-library/user-event';
+import { render, screen, waitFor, cleanup } from '@testing-library/react';
+import { DrawWinner } from '../DrawWinner';
+import { test, vi, expect, afterEach } from 'vitest';
 
-const pickWinner = jest.fn();
+const pickWinner = vi.fn();
+
+afterEach(cleanup);
 
 test('should disable pickWinner button if players count is empty', () => {
   render(<DrawWinner pickWinner={pickWinner} playersCount={0} />);

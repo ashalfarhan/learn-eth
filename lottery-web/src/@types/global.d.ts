@@ -1,4 +1,4 @@
-import { providers } from 'ethers';
+import { ethers } from 'ethers';
 
 type Event = {
   (ev: 'chainChanged', cb: (val: string) => void): void;
@@ -7,7 +7,7 @@ type Event = {
 
 declare global {
   interface Window {
-    ethereum?: providers.ExternalProvider & {
+    ethereum?: ethers.Eip1193Provider & {
       on: Event;
       removeListener: Event;
     };

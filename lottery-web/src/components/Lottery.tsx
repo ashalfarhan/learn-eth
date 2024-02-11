@@ -1,4 +1,4 @@
-import { ethers } from 'ethers';
+import { formatEther } from 'ethers';
 import { DrawWinner } from './DrawWinner';
 import { JoinForm } from './JoinForm';
 import { useWeb3 } from '../context';
@@ -19,8 +19,8 @@ export function Lottery() {
       </span>
       <p>
         This contract is managed by {manager}. There are currently{' '}
-        {playersCount} people entered, competing to win{' '}
-        {ethers.utils.formatEther(pricePool)} ETH.
+        {playersCount} people entered, competing to win {formatEther(pricePool)}{' '}
+        ETH.
       </p>
       <hr />
       <JoinForm joinLottery={contract.join} />
