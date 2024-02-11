@@ -1,9 +1,3 @@
-import { provider } from 'ganache';
-import { ethers } from 'ethers';
-import { ExternalProvider } from '@ethersproject/providers';
+import { GanacheProvider } from '@ethers-ext/provider-ganache';
 
-const ganacheProvide = provider({
-  quiet: true,
-}) as unknown as ExternalProvider;
-
-export const testProvider = new ethers.providers.Web3Provider(ganacheProvide);
+export const testProvider = new GanacheProvider();

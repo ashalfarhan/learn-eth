@@ -38,11 +38,11 @@ jobs:
         # if: contains(steps.changed_files.outputs.all_modified_files, 'lottery-web/')
         run: |
           npm run -w lottery-web build
-          npm run -w lottery-web test --ci --verbose
+          npm run -w lottery-web test
 
       - name: Module kickstart
         # if: contains(steps.changed_files.outputs.all_modified_files, 'kickstart/')
         run: |
           npm run -w kickstart build:contract
-          npm run -w kickstart test --ci --verbose
+          npm run -w kickstart test
           npm run -w kickstart build
