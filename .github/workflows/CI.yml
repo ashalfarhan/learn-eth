@@ -11,16 +11,16 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
       # - name: Check which modules changed
       #   id: changed_files
       #   uses: tj-actions/changed-files@v18.7
 
-      - uses: actions/setup-node@v2
+      - uses: actions/setup-node@v3
         with:
           node-version: 18.17
           cache: 'npm'
-      - run: npm ci
+      - run: npm install
 
       - name: Module inbox
         # if: contains(steps.changed_files.outputs.all_modified_files, 'inbox/')
