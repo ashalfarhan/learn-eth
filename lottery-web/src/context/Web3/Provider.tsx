@@ -1,4 +1,4 @@
-import { BigNumber, ethers } from 'ethers';
+import { ethers } from 'ethers';
 import { PropsWithChildren, useState, useEffect, useMemo } from 'react';
 import { Web3Context } from './Web3Context';
 import { useEthereum } from './useEthereum';
@@ -10,7 +10,7 @@ export const Web3ContextProvider = (props: PropsWithChildren<{}>) => {
   const [state, setState] = useState({
     manager: '',
     playersCount: 0,
-    pricePool: BigNumber.from(0),
+    pricePool: 0n,
     message: '',
   });
 
@@ -19,17 +19,17 @@ export const Web3ContextProvider = (props: PropsWithChildren<{}>) => {
   }, [signer]);
 
   useEffect(() => {
-    const initState = async () => {
+    const init = async () => {
       if (!signer || !provider) return;
 
       try {
         const manager = await contract.manager();
         const count = await contract.getTotalPlayers();
-        const pricePool = await provider.getBalance(contract.address);
+        const pricePool = await provider.getBalance(LOTTERY_CONTRACT_ADDRESS);
         setState(prev => ({
           ...prev,
           manager: manager.toLowerCase(),
-          playersCount: count.toNumber(),
+          playersCount: Number(count),
           pricePool,
         }));
       } catch (error) {
@@ -37,7 +37,7 @@ export const Web3ContextProvider = (props: PropsWithChildren<{}>) => {
       }
     };
 
-    initState();
+    void init();
   }, [contract, signer, provider]);
 
   const values = {

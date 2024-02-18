@@ -10,11 +10,5 @@
     "kickstart",
     "lottery",
     "inbox"
-  ],
-  "scripts": {
-    "lottery-web": "yarn workspace lottery-web",
-    "kickstart": "yarn workspace kickstart",
-    "lottery": "yarn workspace lottery",
-    "inbox": "yarn workspace inbox"
-  }
+  ]
 }

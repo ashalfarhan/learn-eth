@@ -1,11 +1,11 @@
-import { BigNumber, ethers } from 'ethers';
+import { ethers } from 'ethers';
 import { createContext } from 'react';
 
 export type Web3ContextValue = {
   account: string;
   manager: string;
   playersCount: number;
-  pricePool: BigNumber;
+  pricePool: bigint;
   contract: ethers.Contract;
 };
 

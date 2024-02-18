@@ -1,33 +1,31 @@
 require('dotenv/config');
-const { ethers } = require('ethers');
+const { ethers, InfuraProvider } = require('ethers');
 const { abi, bytecode } = require('../artifacts/Lottery.json');
 
-const infura = new ethers.providers.InfuraProvider('rinkeby');
-const conn = ethers.providers.InfuraProvider.getUrl(infura.network, {
-  projectId: process.env.INFURA_PROJECT_ID,
-  projectSecret: process.env.INFURA_PROJECT_SECRET,
-});
+const infura = new InfuraProvider(
+  'sepolia',
+  process.env.INFURA_PROJECT_ID,
+  process.env.INFURA_PROJECT_SECRET
+);
 
-const provider = new ethers.providers.JsonRpcProvider(conn, infura.network);
-const deployer = new ethers.Wallet(process.env.MANAGER_PRIVATE_KEY, provider);
+const deployer = new ethers.Wallet(
+  process.env.MANAGER_PRIVATE_KEY,
+  infura.provider
+);
 
 async function main() {
   console.log('Attempting to deploy with account:', deployer.address);
   const factory = new ethers.ContractFactory(abi, bytecode, deployer);
   const contract = await factory.deploy();
-  return contract;
+  return contract.getAddress();
 }
 
 main()
-  .then(contract => {
-    console.log('Contract address:', contract.address);
-    console.log(
-      'Deployment success with transaction hash:',
-      contract.deployTransaction.hash
-    );
+  .then(contractAddress => {
+    console.log('Done:', { contractAddress });
+    process.exit(0);
   })
   .catch(err => {
-    console.log('Failed to deploy');
     console.error(err);
     process.exit(1);
   });
