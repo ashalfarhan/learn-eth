@@ -19,19 +19,17 @@ export const Web3ContextProvider = (props: PropsWithChildren<{}>) => {
   }, [signer]);
 
   useEffect(() => {
-    const initState = async () => {
+    const init = async () => {
       if (!signer || !provider) return;
 
       try {
         const manager = await contract.manager();
         const count = await contract.getTotalPlayers();
-        const pricePool = await provider.getBalance(
-          await contract.getAddress()
-        );
+        const pricePool = await provider.getBalance(LOTTERY_CONTRACT_ADDRESS);
         setState(prev => ({
           ...prev,
           manager: manager.toLowerCase(),
-          playersCount: count.toNumber(),
+          playersCount: Number(count),
           pricePool,
         }));
       } catch (error) {
@@ -39,7 +37,7 @@ export const Web3ContextProvider = (props: PropsWithChildren<{}>) => {
       }
     };
 
-    initState();
+    void init();
   }, [contract, signer, provider]);
 
   const values = {

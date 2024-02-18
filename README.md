@@ -47,8 +47,6 @@ Additional steps for `kickstart`:
 
 Each contract (except for `inbox`) have their dedicated `deploy` script located in the `scripts` directory. But is requires you to provide infura project id and project secret, also your wallet private key to deploy the contract.
 
-> Note: Keep in mind that the deployment and other config should be set to the rinkeby testnet
-
 - After you have your infura project id and project secret, place them to .env
 
   ```shell
@@ -67,7 +65,6 @@ Each contract (except for `inbox`) have their dedicated `deploy` script located 
 - If deployment success, the output of the above command should be something like this
   ```shell
   Contract address: 0x0000000000000000
-  Deployment success with transaction hash: 0x0000000000000000
   ```
 - Copy the contract address and save them somewhere to interact with that contract in the web interface, optionally to verify the deployment you can check the transaction hash in rinkeby etherscan.
 
@@ -104,5 +101,7 @@ Each contract (except for `inbox`) have their dedicated `deploy` script located 
 - Ether converter
   - https://etherconverter.online
   - https://eth-converter.com
-- Rinkeby faucet
-  - https://faucets.chain.link/rinkeby
+- Ethereum Faucets
+  - https://www.alchemy.com/faucets
+  - https://www.infura.io/faucet
+  - https://faucets.pk910.de
