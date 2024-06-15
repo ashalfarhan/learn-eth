@@ -12,7 +12,7 @@ jobs:
 
     steps:
       - uses: actions/checkout@v3
-      - uses: tj-actions/changed-files@v31
+      - uses: tj-actions/changed-files@v41
         id: changed_files
 
       - uses: actions/setup-node@v3
