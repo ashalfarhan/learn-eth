@@ -19,7 +19,7 @@ jobs:
         with:
           node-version: 18.17
           cache: 'npm'
-      - run: npm install
+      - run: npm ci
 
       - name: Module inbox
         if: contains(steps.changed_files.outputs.all_modified_files, 'inbox/')
