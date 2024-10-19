@@ -1,7 +1,7 @@
 const path = require('path');
 const solc = require('solc');
 const fs = require('fs');
-
+//
 const contractPath = path.join(__dirname, '..', 'contracts');
 const artifactPath = path.join(__dirname, '..', 'artifacts');
 

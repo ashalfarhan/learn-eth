@@ -1,7 +1,7 @@
 const path = require('path');
 const fs = require('fs/promises');
 const solc = require('solc');
-
+//
 const contractPath = path.resolve(__dirname, '..', 'contracts', 'Inbox.sol');
 const artifactPath = path.resolve(__dirname, '..', 'artifacts', 'Inbox.json');
 
