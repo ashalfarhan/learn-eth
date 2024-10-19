@@ -1,0 +1,183 @@
+name: Build and Test
+
+on:
+  push:
+    paths-ignore:
+      - '**.md'
+
+env:
+  CACHE_VERSION: v1
+
+jobs:
+  modules-changed:
+    name: 🔦 Detecting which modules changed
+    runs-on: ubuntu-latest
+    outputs:
+      inbox: ${{ contains(steps.changed-files.outputs.all_modified_files, 'inbox/') }}
+      kickstart: ${{ contains(steps.changed-files.outputs.all_modified_files, 'kickstart/') }}
+      lottery: ${{ contains(steps.changed-files.outputs.all_modified_files, 'lottery/') }}
+      lottery-web: ${{ contains(steps.changed-files.outputs.all_modified_files, 'lottery-web/') }}
+    steps:
+      - name: 📥 Checkout repo
+        uses: actions/checkout@v3
+
+      - name: 🔦 Find file changes
+        id: changed-files
+        uses: tj-actions/changed-files@v41
+
+  deps:
+    name: 📪 Update cached dependencies
+    runs-on: ubuntu-latest
+    steps:
+      - name: 📥 Checkout repo
+        uses: actions/checkout@v3
+
+      - name: 🐢 Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version-file: '.nvmrc'
+          cache: 'npm'
+
+      - name: 🗑 Restore cache
+        uses: actions/cache@v3
+        id: cache-deps
+        with:
+          path: |
+            node_modules
+            **/node_modules
+          key: npm-${{ runner.os }}-${{ env.CACHE_VERSION }}-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: |
+            npm-${{ runner.os }}-${{ env.CACHE_VERSION }}-
+
+      - name: ⬇️ Install dependencies
+        if: ${{ steps.cache-deps.outputs.cache-hit != 'true' }}
+        run: npm ci
+
+  app-inbox:
+    needs: [modules-changed, deps]
+    if: ${{ needs.modules-changed.outputs.inbox == 'true' }}
+    name: App inbox
+    runs-on: ubuntu-latest
+    steps:
+      - name: 📥 Checkout repo
+        uses: actions/checkout@v3
+
+      - name: 🐢 Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version-file: '.nvmrc'
+          cache: 'npm'
+
+      - name: 🗑 Restore cache
+        uses: actions/cache@v3
+        id: cache-deps
+        with:
+          path: |
+            node_modules
+            **/node_modules
+          key: npm-${{ runner.os }}-${{ env.CACHE_VERSION }}-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: |
+            npm-${{ runner.os }}-${{ env.CACHE_VERSION }}-
+
+      - name: 👷‍♀️ Continous Integration
+        id: ci
+        run: |
+          npm run -w inbox build
+          npm run -w inbox test
+
+  app-kickstart:
+    needs: [modules-changed, deps]
+    if: ${{ needs.modules-changed.outputs.kickstart == 'true' }}
+    name: App kickstart
+    runs-on: ubuntu-latest
+    steps:
+      - name: 📥 Checkout repo
+        uses: actions/checkout@v3
+
+      - name: 🐢 Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version-file: '.nvmrc'
+          cache: 'npm'
+
+      - name: 🗑 Restore cache
+        uses: actions/cache@v3
+        id: cache-deps
+        with:
+          path: |
+            node_modules
+            **/node_modules
+          key: npm-${{ runner.os }}-${{ env.CACHE_VERSION }}-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: |
+            npm-${{ runner.os }}-${{ env.CACHE_VERSION }}-
+
+      - name: 👷‍♀️ Continous Integration
+        id: ci
+        run: |
+          npm run -w kickstart build:contract
+          npm run -w kickstart test
+          # npm run -w kickstart build
+
+  app-lottery:
+    needs: [modules-changed, deps]
+    if: ${{ needs.modules-changed.outputs.lottery == 'true' }}
+    name: App lottery
+    runs-on: ubuntu-latest
+    steps:
+      - name: 📥 Checkout repo
+        uses: actions/checkout@v3
+
+      - name: 🐢 Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version-file: '.nvmrc'
+          cache: 'npm'
+
+      - name: 🗑 Restore cache
+        uses: actions/cache@v3
+        id: cache-deps
+        with:
+          path: |
+            node_modules
+            **/node_modules
+          key: npm-${{ runner.os }}-${{ env.CACHE_VERSION }}-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: |
+            npm-${{ runner.os }}-${{ env.CACHE_VERSION }}-
+
+      - name: 👷‍♀️ Continous Integration
+        id: ci
+        run: |
+          npm run -w lottery build
+          npm run -w lottery test
+
+  app-lottery-web:
+    needs: [modules-changed, deps]
+    if: ${{ needs.modules-changed.outputs.lottery-web == 'true' }}
+    name: App lottery-web
+    runs-on: ubuntu-latest
+    steps:
+      - name: 📥 Checkout repo
+        uses: actions/checkout@v3
+
+      - name: 🐢 Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version-file: '.nvmrc'
+          cache: 'npm'
+
+      - name: 🗑 Restore cache
+        uses: actions/cache@v3
+        id: cache-deps
+        with:
+          path: |
+            node_modules
+            **/node_modules
+          key: npm-${{ runner.os }}-${{ env.CACHE_VERSION }}-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: |
+            npm-${{ runner.os }}-${{ env.CACHE_VERSION }}-
+
+      - name: 👷‍♀️ Continous Integration
+        id: ci
+        run: |
+          npm run -w lottery-web build
+          npm run -w lottery-web test
