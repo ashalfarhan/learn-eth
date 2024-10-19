@@ -13,34 +13,34 @@
     "typechain": "typechain --target=ethers-v6 \"artifacts/abi/**/*.json\""
   },
   "dependencies": {
-    "@chakra-ui/icons": "^2.1.1",
-    "@chakra-ui/react": "^2.8.2",
-    "@emotion/react": "^11.11.3",
-    "@emotion/styled": "^11.11.0",
+    "@chakra-ui/icons": "^2.2.4",
+    "@chakra-ui/react": "^2.10.3",
+    "@emotion/react": "^11.13.3",
+    "@emotion/styled": "^11.13.0",
     "@web3-react/core": "^8.2.3",
     "@web3-react/injected-connector": "^6.0.7",
     "@web3-react/network-connector": "^6.2.9",
-    "ethers": "^6.11.0",
-    "framer-motion": "^11.0.3",
-    "next": "^14.2.10",
-    "react": "^18.2.0",
-    "react-dom": "^18.2.0",
-    "vitest": "^1.2.2"
+    "ethers": "^6.13.4",
+    "framer-motion": "^11.11.9",
+    "next": "^14.2.15",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
+    "vitest": "^1.6.0"
   },
   "devDependencies": {
     "@ethers-ext/provider-ganache": "^6.0.0-beta.2",
     "@typechain/ethers-v6": "^0.5.1",
-    "@types/jest": "^29.5.12",
-    "@types/node": "^20.11.17",
-    "@types/react": "^18.2.55",
-    "@types/react-dom": "^18.2.19",
+    "@types/jest": "^29.5.13",
+    "@types/node": "^20.16.13",
+    "@types/react": "^18.3.11",
+    "@types/react-dom": "^18.3.1",
     "@typescript-eslint/eslint-plugin": "^6.21.0",
     "@typescript-eslint/parser": "^6.21.0",
-    "dotenv": "^16.4.2",
-    "eslint": "^8.56.0",
-    "eslint-config-next": "^14.1.0",
-    "solc": "^0.8.24",
+    "dotenv": "^16.4.5",
+    "eslint": "^8.57.1",
+    "eslint-config-next": "^14.2.15",
+    "solc": "^0.8.28",
     "typechain": "^8.3.2",
-    "typescript": "^5.3.3"
+    "typescript": "^5.6.3"
   }
 }

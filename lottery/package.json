@@ -6,10 +6,10 @@
   "devDependencies": {
     "@ethers-ext/provider-ganache": "^6.0.0-beta.2",
     "@typechain/ethers-v6": "^0.5.1",
-    "dotenv": "^16.4.2",
-    "ethers": "^6.11.0",
-    "solc": "^0.8.24",
-    "vitest": "^1.2.2"
+    "dotenv": "^16.4.5",
+    "ethers": "^6.13.4",
+    "solc": "^0.8.28",
+    "vitest": "^1.6.0"
   },
   "scripts": {
     "build": "node scripts/compile.js && npm run typechain",
